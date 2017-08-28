@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg"
+        android:orientation="horizontal"
+        tools:context="com.poscustomer.MainActivity">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/toolbar_1"></include>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rec_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <!--<Button-->
+                <!--android:id="@+id/btn_add_item"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="72dp"-->
+                <!--android:layout_below="@+id/rec_list"-->
+                <!--android:layout_gravity="bottom"-->
+                <!--android:background="@drawable/background_state_drawable"-->
+                <!--android:padding="16dp"-->
+                <!--android:text="Add Item"-->
+                <!--android:textColor="@android:color/white"-->
+                <!--android:textSize="18sp" />-->
+
+                <!--<LinearLayout
+                    android:id="@+id/prev_purchase"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="@dimen/dim_10"
+                    android:background="@drawable/rounded_corner"
+
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/dim_20">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/dim_10"
+                        android:text="Previous Purchase"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/dim_20" />
+
+                    <ListView
+                    android:id="@+id/list_purchase"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dim_10"
+                    android:divider="@color/colorPrimary" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="Rate your latest Purchase"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dim_20" />
+
+                    <RatingBar
+                        android:id="@+id/rating"
+                        style="@style/MerchantRatingBarMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="30dp"
+                        android:layout_marginLeft="@dimen/dim_10"
+                        android:layout_toRightOf="@+id/tv_rate"
+                        android:isIndicator="false"
+                        android:numStars="5"
+                        android:stepSize="0.5" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:id="@+id/prev_purchase_submit"
+                        android:layout_gravity="center"
+                        android:text="Submit"
+                        android:textSize="@dimen/dim_20"
+                        android:textColor="@color/white"
+                        android:background="@color/colorPrimary"
+                        android:padding="@dimen/dim_3"
+                        android:layout_marginTop="@dimen/dim_10"
+                        />
+                </LinearLayout>-->
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/fragment_navigation_drawer"
+        android:name="com.poscustomer.Fragments.FragmentDrawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:layout="@layout/fragment_navigation_drawer"
+        tools:layout="@layout/fragment_navigation_drawer" />
+</LinearLayout>
