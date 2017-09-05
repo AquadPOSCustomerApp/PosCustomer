@@ -24,6 +24,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.poscustomer.Model.Country;
 import com.poscustomer.Model.RestUser;
 
 import java.io.File;
@@ -38,8 +39,10 @@ import java.io.StreamCorruptedException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -120,6 +123,28 @@ public class MyApp extends Application {
         AlertDialog alert = builder.create();
         alert.show();
     }
+
+
+
+    public static void popMessageWithFinish(String titleMsg, String errorMsg,
+                                            final Activity context) {
+        // pop error message
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(titleMsg).setMessage(errorMsg)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        context.finish();
+                    }
+                });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+
 
     public static void showMassage(Context ctx, String msg) {
         Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show();
@@ -528,6 +553,56 @@ public class MyApp extends Application {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
+
+    public void writeCountry(List<Country> country) {
+        try {
+            String path = "/data/data/" + ctx.getPackageName()
+                    + "/country.ser";
+            File f = new File(path);
+            if (f.exists()) {
+                f.delete();
+            }
+            FileOutputStream fileOut = new FileOutputStream(path);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(country);
+            out.close();
+            fileOut.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    public List<Country> readCountry() {
+        String path = "/data/data/" + ctx.getPackageName() + "/country.ser";
+        File f = new File(path);
+        List<Country> user = new ArrayList<>();
+        if (f.exists()) {
+            try {
+                System.gc();
+                FileInputStream fileIn = new FileInputStream(path);
+                ObjectInputStream in = new ObjectInputStream(fileIn);
+                user = (List<Country>) in.readObject();
+                in.close();
+                fileIn.close();
+            } catch (StreamCorruptedException e) {
+                e.printStackTrace();
+            } catch (OptionalDataException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return user;
+    }
+
     public void writeUser(RestUser user) {
         try {
             String path = "/data/data/" + ctx.getPackageName()

@@ -1,6 +1,7 @@
 package com.poscustomer;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,6 +17,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,7 +37,7 @@ import org.json.JSONObject;
  * Created by Abhishek on 31-03-2017.
  */
 
-public class Register_Activity extends CustomActivity  implements CustomActivity.ResponseCallback {
+public class Register_Activity extends CustomActivity implements CustomActivity.ResponseCallback {
     EditText Name, Mobile, Address, Email, Password, ConfPassword;
     TextView Register;
     private Double Lat, Long;
@@ -42,9 +45,10 @@ public class Register_Activity extends CustomActivity  implements CustomActivity
     private LocationListener locationListener;
     private CountryCodePicker ccp;
 
-
+    String value;
+    String phone_no;
     private Toolbar toolbar;
-
+    String mbNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,23 +58,17 @@ public class Register_Activity extends CustomActivity  implements CustomActivity
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setHomeButtonEnabled(true);
-      setResponseListener(this);
+        setResponseListener(this);
 
         actionBar.setDisplayHomeAsUpEnabled(true);
        /* final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
         upArrow.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);*/
-        Register=(TextView)findViewById(R.id.reg_btn);
+
         TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
         mTitle.setText("Create Account");
         actionBar.setTitle("");
-        ccp = (CountryCodePicker) findViewById(R.id.ccp);
-        ccp.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
-            @Override
-            public void onCountrySelected() {
-                Toast.makeText(getContext(), "Updated " + ccp.getSelectedCountryName(), Toast.LENGTH_SHORT).show();
-            }
-        });
+
 
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -93,7 +91,7 @@ public class Register_Activity extends CustomActivity  implements CustomActivity
 
             @Override
             public void onProviderDisabled(String s) {
-                Intent intent= new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(intent);
             }
         };
@@ -112,22 +110,28 @@ public class Register_Activity extends CustomActivity  implements CustomActivity
         }
 
 
-
-
         setupUiElements();
+
     }
 
     private void setupUiElements() {
         setTouchNClick(R.id.reg_btn);
 
 
-        Name=(EditText)findViewById(R.id.et_name);
-        Mobile=(EditText)findViewById(R.id.et_mobile);
-        Address=(EditText)findViewById(R.id.et_address);
-        Email=(EditText)findViewById(R.id.et_email);
-        Password=(EditText)findViewById(R.id.et_passwd);
-        ConfPassword=(EditText)findViewById(R.id.et_conf_passwd);
-
+        Name = (EditText) findViewById(R.id.et_name);
+        Mobile = (EditText) findViewById(R.id.et_mobile);
+        Address = (EditText) findViewById(R.id.et_address);
+        Email = (EditText) findViewById(R.id.et_email);
+        Password = (EditText) findViewById(R.id.et_passwd);
+        ConfPassword = (EditText) findViewById(R.id.et_conf_passwd);
+        ccp = (CountryCodePicker) findViewById(R.id.ccp);
+        ccp.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+            @Override
+            public void onCountrySelected() {
+                Toast.makeText(getContext(), "Updated " + ccp.getSelectedCountryName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        Register = (TextView) findViewById(R.id.reg_btn);
 
 
     }
@@ -161,7 +165,8 @@ public class Register_Activity extends CustomActivity  implements CustomActivity
                 ConfPassword.setError("Enter Password Again");
                 return;
             }
-
+            mbNumber = Mobile.getText().toString();
+            phone_no = ccp.getSelectedCountryCodeWithPlus() + " " +mbNumber;
             registerUser();
 
             //startActivity(new Intent(getContext(), CoordinatorActivity.class));
@@ -169,6 +174,15 @@ public class Register_Activity extends CustomActivity  implements CustomActivity
         }
 
     }
+   /* private void phVarification(){
+        RequestParams q = new RequestParams();
+
+        q.put("task", "verify_user_phone");
+        q.put("user_id",MyApp.getApplication().readUser().getData().getApp_user_id());
+
+        postCall(getContext(), AppConstants.BASE_URL, q, "Verifying your ph no...", 2);
+    }*/
+
 
     private void registerUser() {
         RequestParams p = new RequestParams();
@@ -176,7 +190,7 @@ public class Register_Activity extends CustomActivity  implements CustomActivity
         p.put("task", "register_user");
         p.put("name", Name.getText().toString());
         p.put("email", Email.getText().toString());
-        p.put("phone", Mobile.getText().toString());
+        p.put("phone", phone_no);
         p.put("lat", Lat);
         p.put("lng", Long);
         p.put("address", Address.getText().toString());
@@ -191,25 +205,86 @@ public class Register_Activity extends CustomActivity  implements CustomActivity
 
     @Override
     public void onJsonObjectResponseReceived(JSONObject o, int callNumber) {
-        Log.d("response", o.toString());
-        if (o.optInt("status") == 1) {
+        if (callNumber == 1) {
+            Log.d("response", o.toString());
+            if (o.optInt("status") == 1) {
 
-            MyApp.showMassage(getContext(), "Thank You for joining Us");
-            RestUser u = null;
+                MyApp.showMassage(getContext(), "Thank You for joining Us");
+                RestUser u = null;
 
                 u = new Gson().fromJson(o.toString(), RestUser.class);
 
-            MyApp.getApplication().writeUser(u);
-            startActivity(new Intent(getContext(), MainActivity.class));
-            MyApp.setStatus(AppConstants.IS_LOGGED, true);
-            finish();
-        } else {
-            MyApp.popMessage("Error", o.optString("message"), getContext());
+                MyApp.getApplication().writeUser(u);
+                //startActivity(new Intent(getContext(), PhoneVerificationActivity.class));
+                Intent intent = new Intent(getContext(), PhoneVerificationActivity.class);
+                // intent.putExtra("key", "service_signup");
+                intent.putExtra("phone", phone_no);
+                intent.putExtra("isRegister", true);
+                intent.putExtra("isProvider", true);
+                startActivity(intent);
+                MyApp.setStatus(AppConstants.IS_LOGGED, true);
+                finish();
+            } else {
+                MyApp.popMessage("Error", o.optString("message"), getContext());
 
-        }
+            }
+        }/*else if(callNumber == 2){
+            Log.d("response", o.toString());
+            if (o.optInt("status") == 1) {
 
+                MyApp.showMassage(getContext(), "Your Phone is verified");
+                RestUser u = null;
+
+                u = new Gson().fromJson(o.toString(), RestUser.class);
+
+                MyApp.getApplication().writeUser(u);
+                startActivity(new Intent(getContext(), MainActivity.class));
+                MyApp.setStatus(AppConstants.IS_LOGGED, true);
+                finish();
+            } else {
+                MyApp.popMessage("Error", o.optString("message"), getContext());
+
+            }
+        }*/
     }
 
+
+    /*   private void phVerification() {
+
+           final Dialog dialog = new Dialog(this);
+           dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+           dialog.setContentView(R.layout.verification_dialog);
+
+
+           final String phone_no;
+           phone_no = ccp.getSelectedCountryCodeWithPlus() + " " + Mobile.getText().toString();
+           TextView verification_message = (TextView) dialog.findViewById(R.id.verification_message);
+           verification_message.setText("A Verification code will be sent to " + phone_no + " for verification.");
+           Button dialog_cancel_Button = (Button) dialog.findViewById(R.id.ph_verify_cancel);
+           Button dialog_send_Button = (Button) dialog.findViewById(R.id.btn_send);
+           // if button is clicked, close the custom dialog
+           dialog_cancel_Button.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   dialog.dismiss();
+               }
+           });
+
+
+           dialog_send_Button.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   Intent intent = new Intent(getContext(), PhoneVerificationActivity.class);
+                   intent.putExtra("key", "service_signup");
+                   intent.putExtra("phone", phone_no);
+                   intent.putExtra("isRegister", true);
+                   intent.putExtra("isProvider", true);
+                   startActivity(intent);
+               }
+           });
+           dialog.show();
+
+       }*/
     @Override
     public void onJsonArrayResponseReceived(JSONArray a, int callNumber) {
 

@@ -35,7 +35,7 @@ public class Login_Activity extends CustomActivity implements CustomActivity.Res
         setupuiElement();
 
       if(MyApp.getStatus(AppConstants.IS_LOGGED)){
-           startActivity(new Intent(getContext(),SearchUser.class));
+           startActivity(new Intent(getContext(),MainActivity.class));
            finish();
        }
 
