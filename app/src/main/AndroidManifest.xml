@@ -36,6 +36,9 @@
             android:name=".CoordinatorActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".Login_Activity"
             android:screenOrientation="portrait" />
         <activity

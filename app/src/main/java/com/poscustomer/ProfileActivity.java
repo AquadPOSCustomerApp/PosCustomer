@@ -34,21 +34,18 @@ import org.json.JSONObject;
  * Created by Abhishek on 31-03-2017.
  */
 
-public class Register_Activity extends CustomActivity implements CustomActivity.ResponseCallback {
-    EditText Name, Mobile, Address, Email, Password, ConfPassword;
-    TextView Register;
+public class ProfileActivity extends CustomActivity implements CustomActivity.ResponseCallback {
+    private TextView txt_name, txt_mobile, txt_address, txt_email;
+    private TextView txt_update;
     private Double Lat, Long;
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private CountryCodePicker ccp;
-
-
     private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.register_activity);
+        setContentView(R.layout.profile_activity);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -60,18 +57,10 @@ public class Register_Activity extends CustomActivity implements CustomActivity.
        /* final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
         upArrow.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);*/
-        Register = (TextView) findViewById(R.id.reg_btn);
+        txt_update = (TextView) findViewById(R.id.txt_update);
         TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
-        mTitle.setText("Create Account");
+        mTitle.setText("Profile");
         actionBar.setTitle("");
-        ccp = (CountryCodePicker) findViewById(R.id.ccp);
-        ccp.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
-            @Override
-            public void onCountrySelected() {
-                Toast.makeText(getContext(), "Updated " + ccp.getSelectedCountryName(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
@@ -116,74 +105,31 @@ public class Register_Activity extends CustomActivity implements CustomActivity.
     }
 
     private void setupUiElements() {
-        setTouchNClick(R.id.reg_btn);
+        setTouchNClick(R.id.txt_update);
 
-        Name = (EditText) findViewById(R.id.et_name);
-        Mobile = (EditText) findViewById(R.id.et_mobile);
-        Address = (EditText) findViewById(R.id.et_address);
-        Email = (EditText) findViewById(R.id.et_email);
-        Password = (EditText) findViewById(R.id.et_passwd);
-        ConfPassword = (EditText) findViewById(R.id.et_conf_passwd);
+        txt_name = (TextView) findViewById(R.id.txt_name);
+        txt_mobile = (TextView) findViewById(R.id.txt_mobile);
+        txt_address = (TextView) findViewById(R.id.txt_address);
+        txt_email = (TextView) findViewById(R.id.txt_email);
 
-
+        RestUser.Data u = MyApp.getApplication().readUser().getData();
+        txt_name.setText(u.getName());
+        txt_mobile.setText(u.getPhone());
+        txt_address.setText(u.getAddress());
+        txt_email.setText(u.getEmail());
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        if (v.getId() == R.id.reg_btn) {
-
-            if (TextUtils.isEmpty(Name.getText().toString())) {
-                Name.setError("Enter Name");
-                return;
-            }
-            if (TextUtils.isEmpty(Mobile.getText().toString())) {
-                Mobile.setError("Enter Mobile No");
-                return;
-            }
-            if (TextUtils.isEmpty(Address.getText().toString())) {
-                Address.setError("Enter Address");
-                return;
-            }
-            if (TextUtils.isEmpty(Email.getText().toString())) {
-                Email.setError("Enter Email");
-                return;
-            }
-            if (TextUtils.isEmpty(Password.getText().toString())) {
-                Password.setError("Enter Password");
-                return;
-            }
-            if (TextUtils.isEmpty(ConfPassword.getText().toString())) {
-                ConfPassword.setError("Enter Password Again");
-                return;
-            }
-
-            registerUser();
-
-            //startActivity(new Intent(getContext(), CoordinatorActivity.class));
+        if (v.getId() == R.id.txt_update) {
 
         }
 
     }
 
-    private void registerUser() {
-        RequestParams p = new RequestParams();
-
-        p.put("task", "register_user");
-        p.put("name", Name.getText().toString());
-        p.put("email", Email.getText().toString());
-        p.put("phone", Mobile.getText().toString());
-        p.put("lat", Lat);
-        p.put("lng", Long);
-        p.put("address", Address.getText().toString());
-        p.put("password", Password.getText().toString());
-        p.put("device_token", MyApp.getSharedPrefString(AppConstants.DEVICE_TOKEN));
-
-        postCall(getContext(), AppConstants.BASE_URL, p, "Registering...", 1);
-    }
-
     private Context getContext() {
-        return Register_Activity.this;
+        return ProfileActivity.this;
     }
 
     @Override

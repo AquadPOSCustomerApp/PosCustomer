@@ -4,12 +4,14 @@ import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.poscustomer.Application.MyApp;
+import com.poscustomer.Utils.AppConstants;
 
 /**
  * Created by Abhishek on 24-04-2017.
  */
 
-public class MyFirebaseInstanceIDService  extends FirebaseInstanceIdService {
+public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
     private static final String TAG = "MyFirebaseIIDService";
 
@@ -26,6 +28,6 @@ public class MyFirebaseInstanceIDService  extends FirebaseInstanceIdService {
     }
 
     private void sendRegistrationToServer(String token) {
-        // TODO: Implement this method to send token to your app server.
+        MyApp.setSharedPrefString(AppConstants.DEVICE_TOKEN, token);
     }
 }

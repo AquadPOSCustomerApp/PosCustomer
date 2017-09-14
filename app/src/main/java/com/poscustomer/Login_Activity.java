@@ -20,8 +20,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 
-
-
 public class Login_Activity extends CustomActivity implements CustomActivity.ResponseCallback {
 
     private TextView txt_remember;
@@ -34,14 +32,12 @@ public class Login_Activity extends CustomActivity implements CustomActivity.Res
         setResponseListener(this);
         setupuiElement();
 
-      if(MyApp.getStatus(AppConstants.IS_LOGGED)){
-           startActivity(new Intent(getContext(),SearchUser.class));
-           finish();
-       }
-
-
-
+        if (MyApp.getStatus(AppConstants.IS_LOGGED)) {
+            startActivity(new Intent(getContext(), MainActivity.class));
+            finish();
+        }
     }
+
     private void setupuiElement() {
         setTouchNClick(R.id.btn_login);
         setTouchNClick(R.id.txt_remember);
@@ -100,13 +96,8 @@ public class Login_Activity extends CustomActivity implements CustomActivity.Res
         RequestParams p = new RequestParams();
 
         p.put("task", "user_login");
-
-
         p.put("password", edt_password.getText().toString());
-
         p.put("email", edt_email.getText().toString());
-
-
         postCall(getContext(), AppConstants.BASE_URL, p, "Signing in...", 1);
     }
 

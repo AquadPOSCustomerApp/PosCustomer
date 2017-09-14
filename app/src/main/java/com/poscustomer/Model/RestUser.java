@@ -69,7 +69,15 @@ public class RestUser  implements Serializable {
         private String name;
         private String password;
         private String lat;
+        private String device_token;
 
+        public String getDevice_token() {
+            return device_token;
+        }
+
+        public void setDevice_token(String device_token) {
+            this.device_token = device_token;
+        }
 
         public String getApp_user_id() {
             return app_user_id;

@@ -1,6 +1,7 @@
 package com.poscustomer;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -8,7 +9,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -38,6 +38,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.loopj.android.http.RequestParams;
 import com.mancj.slideup.SlideUp;
 import com.poscustomer.Adapter.CustomAdapter;
 import com.poscustomer.Adapter.DAdapter;
@@ -55,12 +56,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends CustomActivity implements DAdapter.ItemClickCallback, CustomActivity.ResponseCallback, FragmentDrawer.FragmentDrawerListener,
         GoogleApiClient.ConnectionCallbacks, LocationProvider.LocationCallback, LocationProvider.PermissionCallback
-        ,GoogleApiClient.OnConnectionFailedListener, LocationListener, ResultCallback<LocationSettingsResult> {
-
-
-    private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
-    private static final String EXTRA_QUOTE = "EXTRA_QUOTE";
-    private static final String EXTRA_ATTR = "EXTRA_ATTR";
+        , GoogleApiClient.OnConnectionFailedListener, LocationListener, ResultCallback<LocationSettingsResult> {
 
     private RecyclerView recView;
     private DAdapter adapter;
@@ -78,7 +74,6 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
             UPDATE_INTERVAL_IN_MILLISECONDS / 2;
     Location newLocation = null;
     boolean isFirstSet = false;
-    private FragmentDrawer drawerListener;
     private SlideUp slideUp;
     private LinearLayout llm;
     RatingBar ratingBar;
@@ -102,10 +97,6 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-//        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
-//        upArrow.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
-//        getSupportActionBar().setHomeAsUpIndicator(upArrow);
-
         TextView mTitle = (TextView) toolbar_title.findViewById(R.id.toolbar_title);
         mTitle.setText("Merchants");
         actionBar.setTitle("");
@@ -114,32 +105,16 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
                 (DrawerLayout) findViewById(R.id.drawer_layout), toolbar_title);
         drawerFragment.setDrawerListener(this);
         llm = (LinearLayout) findViewById(R.id.prev_purchase);
-        ratingBar=(RatingBar)findViewById(R.id.rating);
+        ratingBar = (RatingBar) findViewById(R.id.rating);
 
-       /* ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                Toast.makeText(MainActivity.this, ""+ String.valueOf(ratingBar), Toast.LENGTH_SHORT).show();
-            }
-        });*/
-
-        Submit=(Button)findViewById(R.id.prev_purchase_submit);
+        Submit = (Button) findViewById(R.id.prev_purchase_submit);
         Submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //ListItem item = (ListItem) listdata.get(p);
                 Intent i = new Intent(MainActivity.this, CoordinatorActivity.class);
-
-               /* Bundle extras = new Bundle();
-                extras.putString(EXTRA_QUOTE, item.getTitle());
-                extras.putString(EXTRA_ATTR, item.getSubTitle());
-                i.putExtra(BUNDLE_EXTRAS, extras);*/
-
-
                 startActivity(i);
                 slideUp.hide();
-
-
             }
         });
         buildGoogleApiClient();
@@ -204,6 +179,10 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
                 .withStartState(SlideUp.State.HIDDEN)
                 .build();
 
+        RequestParams p = new RequestParams();
+        p.put("task", "get_all_order");
+        p.put("user_id", MyApp.getApplication().readUser().getData().getApp_user_id());
+        postCall(getContext(), AppConstants.BASE_URL, p, "Loading...", 2);
 
     }
 
@@ -363,6 +342,7 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
             if (location != null && !isFirstSet) {
                 newLocation = location;
                 isFirstSet = true;
+                updateUserProfile(location);
             }
 
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
@@ -431,8 +411,6 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
         switch (status.getStatusCode()) {
             case LocationSettingsStatusCodes.SUCCESS:
                 Log.i("TAG", "All location settings are satisfied.");
-
-                Toast.makeText(MainActivity.this, "Location is already on.", Toast.LENGTH_SHORT).show();
                 startLocationUpdates();
                 break;
             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
@@ -532,7 +510,11 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
 
     @Override
     public void onJsonObjectResponseReceived(JSONObject o, int callNumber) {
+        if (callNumber == 1) {
+            String jo = o.toString();
+        } else if (callNumber == 2) {
 
+        }
     }
 
     @Override
@@ -547,7 +529,26 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
 
     @Override
     public void handleNewLocation(Location location) {
+        if (location != null && !isFirstSet) {
+            newLocation = location;
+            isFirstSet = true;
+            updateUserProfile(location);
+        }
+    }
 
+    private void updateUserProfile(Location location) {
+        RequestParams p = new RequestParams();
+        p.put("task", "update_user_profile");
+        p.put("device_token", MyApp.getSharedPrefString(AppConstants.DEVICE_TOKEN));
+        p.put("lat", location.getLatitude());
+        p.put("lon", location.getLongitude());
+        p.put("deviceType", "Android");
+        p.put("user_id", MyApp.getApplication().readUser().getData().getApp_user_id());
+        postCall(getContext(), AppConstants.BASE_URL, p, "", 1);
+    }
+
+    private Context getContext() {
+        return MainActivity.this;
     }
 
     @Override
@@ -565,8 +566,8 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
         } else if (position == 1) {
             Intent i = new Intent(this, ResturantList.class);
             startActivity(i);
+        } else if (position == 0) {
+            startActivity(new Intent(getContext(), ProfileActivity.class));
         }
-
-
     }
 }
