@@ -5,7 +5,6 @@ package com.poscustomer.Utils;
  */
 
 public class AppConstants {
-
     public static final String DEVICE_TOKEN = "deviceToken";
     public static String BASE_URL = "http://stubuz.com/pos_api/api.php";
     public static String IS_REMEMBER = "isRemember";

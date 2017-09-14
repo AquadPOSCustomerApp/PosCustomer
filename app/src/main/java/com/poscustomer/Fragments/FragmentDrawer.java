@@ -78,7 +78,10 @@ public class FragmentDrawer extends Fragment {
                 container, false);
         recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
         profile_name = (TextView) layout.findViewById(R.id.profile_name);
-        profile_name.setText(MyApp.getApplication().readUser().getData().getName());
+        try {
+            profile_name.setText(MyApp.getApplication().readUser().getData().getName());
+        }catch (Exception e){}
+
 //        rl_all = (RelativeLayout) layout.findViewById(R.id.rl_all);
 //        rl_all.setOnClickListener(new View.OnClickListener() {
 //            @Override
