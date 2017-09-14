@@ -149,13 +149,6 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(createHelperCallback());
         itemTouchHelper.attachToRecyclerView(recView);
-//        final Button addItem=(Button)findViewById(R.id.btn_add_item);
-//        addItem.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                addItemToList();
-//            }
-//        });
 
 
         slideUp = new SlideUp.Builder(llm)
@@ -199,16 +192,12 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
     @Override
     protected void onPause() {
         super.onPause();
-        // Stop location updates to save battery, but don't disconnect the GoogleApiClient object.
         if (mGoogleApiClient.isConnected()) {
             stopLocationUpdates();
         }
     }
 
     protected void stopLocationUpdates() {
-        // It is a good practice to remove location requests when the activity is in a paused or
-        // stopped state. Doing so helps battery performance and is especially
-        // recommended in applications that request frequent location updates.
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this)
                 .setResultCallback(new ResultCallback<Status>() {
                     @Override
@@ -234,13 +223,7 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
 
-        // Sets the desired interval for active location updates. This interval is
-        // inexact. You may not receive updates at all if no location sources are available, or
-        // you may receive them slower than requested. You may also receive updates faster than
-        // requested if other applications are requesting location at a faster interval.
         mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
-
-        // Sets the fastest rate for active location updates. This interval is exact, and your
         // application will never receive updates faster than this value.
         mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
 
@@ -270,7 +253,6 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
             }
         };
         return simpleItemTouchCallback;
-
     }
 
     private void addItemToList() {
@@ -296,22 +278,8 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
     @Override
     public void onItemClick(int p) {
         ListItem item = (ListItem) listdata.get(p);
-
-    /*    Intent i = new Intent(this, CoordinatorActivity.class);
-
-        Bundle extras = new Bundle();
-        extras.putString(EXTRA_QUOTE, item.getTitle());
-        extras.putString(EXTRA_ATTR, item.getSubTitle());
-        i.putExtra(BUNDLE_EXTRAS, extras);
-
-
-        startActivity(i);*//*
-*/
         slideUp.show();
-
-
         Toast.makeText(this, "Item CLiked" + p, Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
@@ -331,29 +299,18 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
 
     @Override
     public void onLocationChanged(Location location) {
-           /* mCurrentLocation = location;
-        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-        updateLocationUI();
-        Toast.makeText(this, getResources().getString(R.string.location_updated_message),
-                Toast.LENGTH_SHORT).show();*/
-
-
         try {
             if (location != null && !isFirstSet) {
                 newLocation = location;
                 isFirstSet = true;
                 updateUserProfile(location);
             }
-
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
-
 
     @Override
     protected void onStop() {
@@ -382,15 +339,9 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
     @Override
     protected void onResume() {
         super.onResume();
-        // Within {@code onPause()}, we pause location updates, but leave the
-        // connection to GoogleApiClient intact.  Here, we resume receiving
-        // location updates if the user has requested them.
         if (mGoogleApiClient.isConnected() && mRequestingLocationUpdates) {
-            //  Toast.makeText(MainActivity.this, "location was already on so detecting location now", Toast.LENGTH_SHORT).show();
             startLocationUpdates();
         }
-
-
     }
 
     @Override
@@ -418,12 +369,6 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
                         "upgrade location settings ");
 
                 try {
-                    // Show the dialog by calling startResolutionForResult(), and check the result
-                    // in onActivityResult().
-                    Toast.makeText(MainActivity.this, "Location dialog will be open", Toast.LENGTH_SHORT).show();
-                    //
-
-                    //move to step 6 in onActivityResult to check what action user has taken on settings dialog
                     status.startResolutionForResult(MainActivity.this, REQUEST_CHECK_SETTINGS);
                 } catch (IntentSender.SendIntentException e) {
                     Log.i("TAG", "PendingIntent unable to execute request.");
@@ -450,13 +395,6 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
                 (this, android.Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
                 (this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         LocationServices.FusedLocationApi.requestLocationUpdates
@@ -464,7 +402,6 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
             @Override
             public void onResult(Status status) {
                 mRequestingLocationUpdates = true;
-                //     setButtonsEnabledState();
             }
         });
     }
@@ -473,24 +410,15 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
             newLocation = mLastLocation;
             Log.d("TAG", "ON connected");
-
         } else
             try {
                 LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, MainActivity.this);
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -513,18 +441,15 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
         if (callNumber == 1) {
             String jo = o.toString();
         } else if (callNumber == 2) {
-
         }
     }
 
     @Override
     public void onJsonArrayResponseReceived(JSONArray a, int callNumber) {
-
     }
 
     @Override
     public void onErrorReceived(String error) {
-
     }
 
     @Override
@@ -553,7 +478,6 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
 
     @Override
     public void handleManualPermission() {
-
     }
 
     @Override

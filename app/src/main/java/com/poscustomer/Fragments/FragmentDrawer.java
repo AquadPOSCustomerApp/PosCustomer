@@ -34,12 +34,9 @@ public class FragmentDrawer extends Fragment {
     private View containerView;
     private static String[] titles = null;
     private TextView profile_name;
-
     private FragmentDrawerListener drawerListener;
-//    private RelativeLayout rl_all, rl_quick, rl_offer, rl_more;
 
     public FragmentDrawer() {
-
     }
 
 
@@ -50,7 +47,6 @@ public class FragmentDrawer extends Fragment {
     public static List<String> getData() {
         List<String> data = new ArrayList<>();
 
-        // preparing navigation drawer items
         for (int i = 0; i < titles.length; i++) {
             data.add(titles[i]);
         }
@@ -62,12 +58,8 @@ public class FragmentDrawer extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // drawer labels
         titles = getActivity().getResources().getStringArray(
                 R.array.nav_drawer_labels);
-
-
     }
 
     @Override
@@ -81,15 +73,6 @@ public class FragmentDrawer extends Fragment {
         try {
             profile_name.setText(MyApp.getApplication().readUser().getData().getName());
         }catch (Exception e){}
-
-//        rl_all = (RelativeLayout) layout.findViewById(R.id.rl_all);
-//        rl_all.setOnClickListener(new View.OnClickListener() {
-//            @Override
-////            public void onClick(View view) {
-//                drawerListener.onDrawerItemSelected(view, 0);
-//                mDrawerLayout.closeDrawer(containerView);
-//            }
-//        });
 
         adapter = new NavigationDrawerAdapter(getActivity(), getData());
         recyclerView.setAdapter(adapter);
@@ -132,7 +115,6 @@ public class FragmentDrawer extends Fragment {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
-                // toolbar.setAlpha(1 - slideOffset / 2);
             }
         };
 
@@ -200,7 +182,6 @@ public class FragmentDrawer extends Fragment {
         public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
         }
-
     }
 
     public interface FragmentDrawerListener {

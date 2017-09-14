@@ -57,9 +57,6 @@ public class Register_Activity extends CustomActivity implements CustomActivity.
         setResponseListener(this);
 
         actionBar.setDisplayHomeAsUpEnabled(true);
-       /* final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
-        upArrow.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
-        getSupportActionBar().setHomeAsUpIndicator(upArrow);*/
         Register = (TextView) findViewById(R.id.reg_btn);
         TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
         mTitle.setText("Create Account");
@@ -160,8 +157,6 @@ public class Register_Activity extends CustomActivity implements CustomActivity.
 
             registerUser();
 
-            //startActivity(new Intent(getContext(), CoordinatorActivity.class));
-
         }
 
     }
@@ -209,12 +204,10 @@ public class Register_Activity extends CustomActivity implements CustomActivity.
 
     @Override
     public void onJsonArrayResponseReceived(JSONArray a, int callNumber) {
-
     }
 
     @Override
     public void onErrorReceived(String error) {
-
     }
 }
 
