@@ -81,11 +81,16 @@ public class MyApp extends Application {
     }
 
     public static void spinnerStop() {
-        if (dialog != null) {
-            if (dialog.isShowing()) {
-                dialog.dismiss();
+        try {
+            if (dialog != null) {
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
             }
+        }catch (Exception e){
+
         }
+
 
     }
 

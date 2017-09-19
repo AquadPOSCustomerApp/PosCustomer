@@ -492,6 +492,8 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
             startActivity(i);
         } else if (position == 0) {
             startActivity(new Intent(getContext(), ProfileActivity.class));
+        } else if (position == 2) {
+            startActivity(new Intent(getContext(), HistoryActivity.class));
         }
     }
 }
