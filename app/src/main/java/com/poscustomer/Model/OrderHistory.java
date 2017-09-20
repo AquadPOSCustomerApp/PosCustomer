@@ -30,17 +30,20 @@ public class OrderHistory implements Serializable {
         this.status = status;
     }
 
-    public List<Data> getOrder() {
-        return order;
-    }
 
-    public void setOrder(List<Data> order) {
-        this.order = order;
-    }
 
     private String status;
-   // private Data data;
-    private List<Data> order;
+
+    public List<Data> getData() {
+        return data;
+    }
+
+    public void setData(List<Data> data) {
+        this.data = data;
+    }
+
+    // private Data data;
+    private List<Data> data;
 
 
 
