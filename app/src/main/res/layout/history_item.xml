@@ -12,14 +12,13 @@
     android:layout_centerVertical="true"
     android:layout_margin="@dimen/dim_10"
     android:src="@drawable/send_price_quotation"
-    android:id="@+id/img_payment_mode"
-    /><LinearLayout
+    android:id="@+id/img_payment_mode" />
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
 
-        android:layout_toRightOf="@+id/img_payment_mode"
-        android:paddingLeft="@dimen/dim_15">
+        android:layout_toRightOf="@+id/img_payment_mode">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,8 +26,8 @@
             android:text="Sat, Mar 18, 09:14 PM"
             android:textColor="@color/black"
             android:id="@+id/tv_date_time"
-            android:layout_marginLeft="@dimen/dim_10"
-            android:textSize="@dimen/dim_16"
+
+            android:textSize="@dimen/dim_14"
 
             />
 
@@ -72,7 +71,7 @@
             android:id="@+id/tv_cost"
             android:textColor="@color/black"
             android:layout_alignParentRight="true"
-            android:textSize="@dimen/dim_16"
-            android:layout_marginRight="@dimen/dim_10"/>
+            android:textSize="@dimen/dim_14"
+            android:layout_marginRight="@dimen/dim_5"/>
 </RelativeLayout>
 </LinearLayout>

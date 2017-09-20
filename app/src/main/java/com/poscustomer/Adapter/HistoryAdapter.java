@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import com.poscustomer.Model.OrderHistory;
 import com.poscustomer.R;
 
 import java.util.ArrayList;
@@ -21,8 +22,8 @@ import java.util.List;
  */
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.DataHolder> {
-
-    private List<DummyHistoryItem> listdata;
+    //private OrderHistory data;
+    private List<OrderHistory> listdata;
     private LayoutInflater inflater;
     private ItemClickCallback itemclickcallback;
     private int count = 0;
@@ -43,9 +44,13 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.DataHold
     public void SetItemClickCallback(final ItemClickCallback itemClickCallback) {
         this.itemclickcallback = itemClickCallback;
     }
+    /*public HistoryAdapter(OrderHistory data, Context c) {
+        this.inflater = LayoutInflater.from(c);
+        this.data = data;
+        this.context = c;
+    }*/
 
-
-    public HistoryAdapter(List<DummyHistoryItem> listdata, Context c) {
+    public HistoryAdapter(List<OrderHistory> listdata, Context c) {
         this.inflater = LayoutInflater.from(c);
         this.listdata = listdata;
         this.context = c;
@@ -57,19 +62,41 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.DataHold
         View view = inflater.inflate(R.layout.history_item, parent, false);
         return new DataHolder(view);
 
+
     }
+
+
+/*
+    @Override
+    public void onBindViewHolder(DataHolder holder, int position) {
+        OrderHistory.Data item = data.getOrder().get(position);
+        //   OrderHistory.Data item = listdata.getOrder.get(position);
+        //OrderHistory.Data item = listdata.get(position);
+
+        // holder.img_payment_mode.setImageResource(item.getPaymentModeIcon());
+        holder.tv_date_time.setText(item.getCreated_at());
+        holder.tv_order_id.setText(item.getOrder_id());
+        // holder.tv_description.setText(item.getDescription());
+        holder.tv_cost.setText(item.getGrand_total());
+    }*/
+
+
+
+
 
     @Override
     public void onBindViewHolder(DataHolder holder, int position) {
-        DummyHistoryItem item = listdata.get(position);
+        OrderHistory item = listdata.get(position);
+             OrderHistory.Data abc = item.getOrder().get(position);
+     //   OrderHistory.Data item = listdata.getOrder.get(position);
+        //OrderHistory.Data item = listdata.get(position);
 
-        holder.img_payment_mode.setImageResource(item.getPaymentModeIcon());
-        holder.tv_date_time.setText(item.getDateTime());
-        holder.tv_order_id.setText(item.getOrderId());
-        holder.tv_description.setText(item.getDescription());
-        holder.tv_cost.setText(item.getCost());
+       // holder.img_payment_mode.setImageResource(item.getPaymentModeIcon());
+        holder.tv_date_time.setText(abc.getCreated_at());
+        holder.tv_order_id.setText(abc.getOrder_id());
+       // holder.tv_description.setText(item.getDescription());
+        holder.tv_cost.setText(abc.getGrand_total());
     }
-
     @Override
     public int getItemCount() {
         return listdata.size();
@@ -95,7 +122,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.DataHold
 
     }
 
-    public void setListData(ArrayList<DummyHistoryItem> exerciseList) {
+    public void setListData(ArrayList<OrderHistory> exerciseList) {
         this.listdata.clear();
         this.listdata.addAll(exerciseList);
 

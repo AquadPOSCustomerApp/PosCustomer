@@ -56,7 +56,7 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
     private TextView txt_change;
     private TextView txt_resend;
     private boolean isRegister = false;
-    private String countryId = "94";
+    private String countryId = "91";
     private boolean isProvider = false;
 
     @Override
@@ -77,8 +77,8 @@ public class PhoneVerificationActivity extends CustomActivity implements CustomA
         setResponseListener(this);
 
 
-        isRegister = getIntent().getBooleanExtra("isRegister", false);
-        isProvider = getIntent().getBooleanExtra("isProvider", false);
+       // isRegister = getIntent().getBooleanExtra("isRegister", false);
+        //isProvider = getIntent().getBooleanExtra("isProvider", false);
         mb_no.setText(getIntent().getStringExtra("phone"));
        // Bundle extras = getIntent().getExtras();
 //

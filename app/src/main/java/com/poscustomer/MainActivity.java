@@ -38,6 +38,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.mancj.slideup.SlideUp;
 import com.poscustomer.Adapter.CustomAdapter;
@@ -47,6 +48,8 @@ import com.poscustomer.Fragments.FragmentDrawer;
 import com.poscustomer.Model.DummyData;
 import com.poscustomer.Model.DummyListItem;
 import com.poscustomer.Model.ListItem;
+import com.poscustomer.Model.OrderHistory;
+import com.poscustomer.Model.RestUser;
 import com.poscustomer.Utils.AppConstants;
 
 import org.json.JSONArray;
@@ -441,6 +444,10 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
         if (callNumber == 1) {
             String jo = o.toString();
         } else if (callNumber == 2) {
+            Log.d("response", o.toString());
+
+            OrderHistory u = new Gson().fromJson(o.toString(), OrderHistory.class);
+           // MyApp.getApplication().writeUser(u);
         }
     }
 

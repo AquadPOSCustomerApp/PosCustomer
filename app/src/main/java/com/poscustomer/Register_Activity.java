@@ -41,7 +41,7 @@ public class Register_Activity extends CustomActivity implements CustomActivity.
     private LocationManager locationManager;
     private LocationListener locationListener;
     private CountryCodePicker ccp;
-
+    private String phone_no;
 
     private Toolbar toolbar;
 
@@ -154,7 +154,7 @@ public class Register_Activity extends CustomActivity implements CustomActivity.
                 ConfPassword.setError("Enter Password Again");
                 return;
             }
-
+            phone_no = ccp.getSelectedCountryCodeWithPlus() + " " + Mobile.getText().toString();
             registerUser();
 
         }
@@ -192,7 +192,11 @@ public class Register_Activity extends CustomActivity implements CustomActivity.
             u = new Gson().fromJson(o.toString(), RestUser.class);
 
             MyApp.getApplication().writeUser(u);
-            startActivity(new Intent(getContext(), MainActivity.class));
+            Intent intent = new Intent(Register_Activity.this, PhoneVerificationActivity.class);
+         //   intent.putExtra("key", "customer_signup");
+            intent.putExtra("phone", phone_no);
+            intent.putExtra("isRegister", true);
+            startActivity(intent);
             MyApp.setStatus(AppConstants.IS_LOGGED, true);
             finish();
         } else {
