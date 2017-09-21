@@ -2,6 +2,7 @@ package com.poscustomer.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 
 import com.poscustomer.Model.OrderHistory;
+import com.poscustomer.Model.OrderItem;
 import com.poscustomer.R;
 
 import java.util.ArrayList;
@@ -23,22 +25,18 @@ import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.DataHolder> {
     //private OrderHistory data;
-    private List<OrderHistory> listdata;
+    private OrderHistory listdata;
     private LayoutInflater inflater;
     private ItemClickCallback itemclickcallback;
     private int count = 0;
     private Context context;
+
     public interface ItemClickCallback {
         void onItemClick(int p);
 
         void onSecondaryIconClick(int p);
 
     }
-
-
-
-
-
 
 
     public void SetItemClickCallback(final ItemClickCallback itemClickCallback) {
@@ -50,7 +48,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.DataHold
         this.context = c;
     }*/
 
-    public HistoryAdapter(List<OrderHistory> listdata, Context c) {
+    public HistoryAdapter(OrderHistory listdata, Context c) {
         this.inflater = LayoutInflater.from(c);
         this.listdata = listdata;
         this.context = c;
@@ -81,50 +79,53 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.DataHold
     }*/
 
 
-
-
-
     @Override
     public void onBindViewHolder(DataHolder holder, int position) {
-        OrderHistory item = listdata.get(position);
-             OrderHistory.Data abc = item.getOrder().get(position);
-     //   OrderHistory.Data item = listdata.getOrder.get(position);
-        //OrderHistory.Data item = listdata.get(position);
+        OrderHistory.Data item = listdata.getData().get(position);
 
-       // holder.img_payment_mode.setImageResource(item.getPaymentModeIcon());
-        holder.tv_date_time.setText(abc.getCreated_at());
-        holder.tv_order_id.setText(abc.getOrder_id());
-       // holder.tv_description.setText(item.getDescription());
-        holder.tv_cost.setText(abc.getGrand_total());
+        // OrderHistory.Data.OrderItems prod = listdata.getData().get(position).getOrder_items().get(0);
+        // OrderHistory.Data item = listdata.getOrder.get(position);
+        //OrderHistory.Data item = listdata.get(position);
+        String paymentMode = item.getPay_mode();
+        if (paymentMode.equals("Cash")) {
+            holder.img_payment_mode.setImageResource(R.drawable.money);
+        } else {
+            holder.img_payment_mode.setImageResource(R.drawable.paytm_icon);
+        }
+        holder.tv_date_time.setText(item.getCreated_at());
+        holder.tv_order_id.setText("ORDER_" + item.getOrder_id());
+        holder.tv_description.setText("Total Item Purchased : " + item.getOrder_items().size());
+        holder.tv_cost.setText(item.getGrand_total());
     }
+
     @Override
     public int getItemCount() {
-        return listdata.size();
+        return listdata.getData().size();
     }
 
 
     class DataHolder extends RecyclerView.ViewHolder {
-        TextView tv_date_time,tv_order_id,tv_description,tv_cost;
+        TextView tv_date_time, tv_order_id, tv_description, tv_cost;
         ImageView img_payment_mode;
-
+        CardView card_history_item;
 
         public DataHolder(final View itemView) {
             super(itemView);
-            tv_date_time=(TextView)itemView.findViewById(R.id.tv_date_time);
-            tv_order_id=(TextView)itemView.findViewById(R.id.tv_order_id);
-            tv_description=(TextView)itemView.findViewById(R.id.tv_description);
-            tv_cost=(TextView)itemView.findViewById(R.id.tv_cost);
+            tv_date_time = (TextView) itemView.findViewById(R.id.tv_date_time);
+            tv_order_id = (TextView) itemView.findViewById(R.id.tv_order_id);
+            tv_description = (TextView) itemView.findViewById(R.id.tv_description);
+            tv_cost = (TextView) itemView.findViewById(R.id.tv_cost);
+            card_history_item=(CardView)itemView.findViewById(R.id.card_history_item);
+            img_payment_mode = (ImageView) itemView.findViewById(R.id.img_payment_mode);
+            card_history_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            img_payment_mode=(ImageView)itemView.findViewById(R.id.img_payment_mode);
-
+                }
+            });
         }
 
 
     }
 
-    public void setListData(ArrayList<OrderHistory> exerciseList) {
-        this.listdata.clear();
-        this.listdata.addAll(exerciseList);
-
-    }
 }

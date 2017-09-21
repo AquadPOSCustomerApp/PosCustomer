@@ -44,6 +44,7 @@ import com.mancj.slideup.SlideUp;
 import com.poscustomer.Adapter.CustomAdapter;
 import com.poscustomer.Adapter.DAdapter;
 import com.poscustomer.Application.MyApp;
+import com.poscustomer.Application.SingleInstance;
 import com.poscustomer.Fragments.FragmentDrawer;
 import com.poscustomer.Model.DummyData;
 import com.poscustomer.Model.DummyListItem;
@@ -447,6 +448,8 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
             Log.d("response", o.toString());
 
             OrderHistory u = new Gson().fromJson(o.toString(), OrderHistory.class);
+            SingleInstance.getInstance().setHistoryData(u);
+            int size = u.getData().size();
            // MyApp.getApplication().writeUser(u);
         }
     }
@@ -468,7 +471,7 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
         }
     }
 
-    private void updateUserProfile(Location location) {
+    public void updateUserProfile(Location location) {
         RequestParams p = new RequestParams();
         p.put("task", "update_user_profile");
         p.put("device_token", MyApp.getSharedPrefString(AppConstants.DEVICE_TOKEN));

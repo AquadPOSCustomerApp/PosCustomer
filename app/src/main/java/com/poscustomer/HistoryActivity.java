@@ -10,14 +10,18 @@ import android.widget.TextView;
 
 import com.poscustomer.Adapter.DummyHistoryData;
 import com.poscustomer.Adapter.HistoryAdapter;
+import com.poscustomer.Application.SingleInstance;
+import com.poscustomer.Model.OrderHistory;
 
 import java.util.ArrayList;
 
 public class HistoryActivity extends CustomActivity {
     private Toolbar toolbar;
     private RecyclerView history_rec;
-    private ArrayList listdata;
+    private OrderHistory listdata;
     private HistoryAdapter adapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,9 +36,11 @@ public class HistoryActivity extends CustomActivity {
         mTitle.setText("History");
         actionBar.setTitle("");
 
-        history_rec=(RecyclerView)findViewById(R.id.history_rec);
+        history_rec = (RecyclerView) findViewById(R.id.history_rec);
 
-        listdata = (ArrayList) DummyHistoryData.getListData();
+        listdata = SingleInstance.getInstance().getHistoryData();
+
+
         history_rec.setLayoutManager(new LinearLayoutManager(this));
         adapter = new HistoryAdapter(listdata, this);
         history_rec.setAdapter(adapter);

@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dim_5"
+        android:padding="@dimen/dim_5"
         android:id="@+id/history_rec"
 
         />

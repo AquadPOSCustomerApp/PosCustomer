@@ -35,12 +35,13 @@ import org.json.JSONObject;
  */
 
 public class ProfileActivity extends CustomActivity implements CustomActivity.ResponseCallback {
-    private TextView txt_name, txt_mobile, txt_address, txt_email;
-    private TextView txt_update;
+    private EditText txt_name, txt_mobile, txt_address;
+    private TextView txt_update, txt_email;
     private Double Lat, Long;
     private LocationManager locationManager;
     private LocationListener locationListener;
     private Toolbar toolbar;
+    private Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,9 +108,9 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
     private void setupUiElements() {
         setTouchNClick(R.id.txt_update);
 
-        txt_name = (TextView) findViewById(R.id.txt_name);
-        txt_mobile = (TextView) findViewById(R.id.txt_mobile);
-        txt_address = (TextView) findViewById(R.id.txt_address);
+        txt_name = (EditText) findViewById(R.id.txt_name);
+        txt_mobile = (EditText) findViewById(R.id.txt_mobile);
+        txt_address = (EditText) findViewById(R.id.txt_address);
         txt_email = (TextView) findViewById(R.id.txt_email);
 
         RestUser.Data u = MyApp.getApplication().readUser().getData();
@@ -123,10 +124,34 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
     public void onClick(View v) {
         super.onClick(v);
         if (v.getId() == R.id.txt_update) {
+           updateUserProfile();
 
         }
 
     }
+
+
+
+
+
+
+    public void updateUserProfile() {
+        RequestParams p = new RequestParams();
+        p.put("task", "update_user_profile");
+        p.put("user_id", MyApp.getApplication().readUser().getData().getApp_user_id());
+        p.put("name", txt_name.getText());
+        p.put("phone", txt_mobile.getText());
+      //  p.put("lat", location.getLatitude());
+        //p.put("lon", location.getLongitude());
+        p.put("address", txt_address.getText());
+        p.put("device_token", MyApp.getSharedPrefString(AppConstants.DEVICE_TOKEN));
+        p.put("deviceType", "Android");
+
+        postCall(getContext(), AppConstants.BASE_URL, p, "Updating Profile...", 1);
+    }
+
+
+
 
     private Context getContext() {
         return ProfileActivity.this;
@@ -137,11 +162,8 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
         Log.d("response", o.toString());
         if (o.optInt("status") == 1) {
 
-            MyApp.showMassage(getContext(), "Thank You for joining Us");
-            RestUser u = null;
-
-            u = new Gson().fromJson(o.toString(), RestUser.class);
-
+            MyApp.showMassage(getContext(), "Profile Updated Successfully");
+            RestUser u = new Gson().fromJson(o.toString(), RestUser.class);;
             MyApp.getApplication().writeUser(u);
             startActivity(new Intent(getContext(), MainActivity.class));
             MyApp.setStatus(AppConstants.IS_LOGGED, true);
