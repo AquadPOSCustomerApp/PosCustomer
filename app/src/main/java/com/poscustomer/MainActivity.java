@@ -43,6 +43,7 @@ import com.loopj.android.http.RequestParams;
 import com.mancj.slideup.SlideUp;
 import com.poscustomer.Adapter.CustomAdapter;
 import com.poscustomer.Adapter.DAdapter;
+import com.poscustomer.Application.DetailSingleInstance;
 import com.poscustomer.Application.MyApp;
 import com.poscustomer.Application.SingleInstance;
 import com.poscustomer.Fragments.FragmentDrawer;
@@ -50,6 +51,7 @@ import com.poscustomer.Model.DummyData;
 import com.poscustomer.Model.DummyListItem;
 import com.poscustomer.Model.ListItem;
 import com.poscustomer.Model.OrderHistory;
+import com.poscustomer.Model.OrderItem;
 import com.poscustomer.Model.RestUser;
 import com.poscustomer.Utils.AppConstants;
 
@@ -448,7 +450,9 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
             Log.d("response", o.toString());
 
             OrderHistory u = new Gson().fromJson(o.toString(), OrderHistory.class);
+           // OrderHistory p = new Gson().fromJson(o.toString(), OrderItem.class);
             SingleInstance.getInstance().setHistoryData(u);
+          //  DetailSingleInstance.getInstance().getItemData(p);
             int size = u.getData().size();
            // MyApp.getApplication().writeUser(u);
         }

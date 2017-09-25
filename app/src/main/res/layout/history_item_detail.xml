@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_history_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/back"
+    app:cardCornerRadius="@dimen/dim_5">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/dim_10">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/img_pay_mode"
+                android:text="Pasta"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dim_16"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/tv_item_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="X 12"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dim_16" />
+
+
+            <TextView
+                android:id="@+id/tv_total_item_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/dim_5"
+                android:text="Rs 114"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dim_16" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_item_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_6"
+            android:text="Rs 12.96"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dim_16" />
+    </LinearLayout>
+</LinearLayout>

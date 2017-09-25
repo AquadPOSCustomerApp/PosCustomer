@@ -17,6 +17,15 @@ public class SingleInstance {
     }
 
     private OrderHistory historyData;
+    private OrderHistory.Data historyDetails;
+
+    public OrderHistory.Data getHistoryDetails() {
+        return historyDetails;
+    }
+
+    public void setHistoryDetails(OrderHistory.Data historyDetails) {
+        this.historyDetails = historyDetails;
+    }
 
     public OrderHistory getHistoryData() {
         return historyData;

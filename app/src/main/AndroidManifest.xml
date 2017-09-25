@@ -92,12 +92,16 @@
         <activity
             android:name=".SearchUser"
             android:screenOrientation="portrait" />
-        <activity android:name=".AllOffersActivity"
-            android:screenOrientation="sensorPortrait"/>
-        <activity android:name=".PhoneVerificationActivity"
-            android:screenOrientation="sensorPortrait"/>
-        <activity android:name=".HistoryActivity"
-            android:screenOrientation="sensorPortrait"></activity>
+        <activity
+            android:name=".AllOffersActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".PhoneVerificationActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".HistoryActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity android:name=".HistoryDetailActivity"></activity>
     </application>
 
 </manifest>

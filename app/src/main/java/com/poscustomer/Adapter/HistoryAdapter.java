@@ -12,9 +12,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import com.poscustomer.Application.SingleInstance;
+import com.poscustomer.HistoryDetailActivity;
 import com.poscustomer.Model.OrderHistory;
 import com.poscustomer.Model.OrderItem;
+import com.poscustomer.PhoneVerificationActivity;
 import com.poscustomer.R;
+import com.poscustomer.Register_Activity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,11 +119,18 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.DataHold
             tv_order_id = (TextView) itemView.findViewById(R.id.tv_order_id);
             tv_description = (TextView) itemView.findViewById(R.id.tv_description);
             tv_cost = (TextView) itemView.findViewById(R.id.tv_cost);
-            card_history_item=(CardView)itemView.findViewById(R.id.card_history_item);
+            card_history_item = (CardView) itemView.findViewById(R.id.card_history_item);
             img_payment_mode = (ImageView) itemView.findViewById(R.id.img_payment_mode);
             card_history_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    OrderHistory.Data item = listdata.getData().get(getLayoutPosition());
+                    SingleInstance.getInstance().setHistoryDetails(item);
+                    Intent intent = new Intent(context, HistoryDetailActivity.class);
+                    intent.putExtra("orderId", item.getOrder_id());
+                    intent.putExtra("totalCost", item.getGrand_total());
+                    intent.putExtra("orderDate", item.getCreated_at());
+                    context.startActivity(intent);
 
                 }
             });
