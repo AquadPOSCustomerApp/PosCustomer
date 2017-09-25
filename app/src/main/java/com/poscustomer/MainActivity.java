@@ -43,12 +43,15 @@ import com.loopj.android.http.RequestParams;
 import com.mancj.slideup.SlideUp;
 import com.poscustomer.Adapter.CustomAdapter;
 import com.poscustomer.Adapter.DAdapter;
+import com.poscustomer.Adapter.GetOfferAdapter;
 import com.poscustomer.Application.DetailSingleInstance;
 import com.poscustomer.Application.MyApp;
+import com.poscustomer.Application.OffersInstance;
 import com.poscustomer.Application.SingleInstance;
 import com.poscustomer.Fragments.FragmentDrawer;
 import com.poscustomer.Model.DummyData;
 import com.poscustomer.Model.DummyListItem;
+import com.poscustomer.Model.GetOffers;
 import com.poscustomer.Model.ListItem;
 import com.poscustomer.Model.OrderHistory;
 import com.poscustomer.Model.OrderItem;
@@ -66,7 +69,7 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
 
     private RecyclerView recView;
     private DAdapter adapter;
-    private ArrayList listdata;
+    private GetOffers listdata;
     private Toolbar toolbar_title;
     private FragmentDrawer drawerFragment;
     protected GoogleApiClient mGoogleApiClient;
@@ -94,6 +97,7 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getAllOffers();
         toolbar_title = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar_title);
         ActionBar actionBar = getSupportActionBar();
@@ -104,8 +108,9 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         TextView mTitle = (TextView) toolbar_title.findViewById(R.id.toolbar_title);
-        mTitle.setText("Merchants");
+        mTitle.setText("Offers");
         actionBar.setTitle("");
+
         drawerFragment = (FragmentDrawer) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         drawerFragment.setUp(R.id.fragment_navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout), toolbar_title);
@@ -141,14 +146,19 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
         customAdapter = new CustomAdapter(dummyListItems, getApplicationContext());
         purchaseHistory.setAdapter(customAdapter);
 
-        listdata = (ArrayList) DummyData.getListData();
+      //  listdata = (ArrayList) DummyData.getListData();
+        /*rec_get_al_offers = (RecyclerView) findViewById(R.id.rec_get_al_offers);
 
+        //listdata = SingleInstance.getInstance().getHistoryData();
+
+
+        rec_get_al_offers.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new GetOfferAdapter(listdata, this);
+        rec_get_al_offers.setAdapter(adapter);*/
 
         recView = (RecyclerView) findViewById(R.id.rec_list);
-
-
+        listdata = OffersInstance.getInstance().getOffersData();
         recView.setLayoutManager(new LinearLayoutManager(this));
-
         adapter = new DAdapter(listdata, this);
         recView.setAdapter(adapter);
         adapter.SetItemClickCallback(this);
@@ -183,6 +193,17 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
         p.put("user_id", MyApp.getApplication().readUser().getData().getApp_user_id());
         postCall(getContext(), AppConstants.BASE_URL, p, "Loading...", 2);
 
+
+
+    }
+
+
+    public void getAllOffers() {
+        RequestParams q = new RequestParams();
+        q.put("task", "get_all_offers");
+        q.put("restaurant_id", "5");
+
+        postCall(getContext(), AppConstants.BASE_URL, q, "", 3);
     }
 
     private void checkLocationSettings() {
@@ -263,34 +284,34 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
 
     private void addItemToList() {
         ListItem item = DummyData.getRandomListItem();
-        listdata.add(item);
-        adapter.notifyItemInserted(listdata.indexOf(item));
+       // listdata.add(item);
+        //adapter.notifyItemInserted(listdata.indexOf(item));
     }
 
     private void moveItem(int oldPos, int newPos) {
 
-        ListItem item = (ListItem) listdata.get(oldPos);
-        listdata.remove(oldPos);
-        listdata.add(newPos, item);
+        //ListItem item = (ListItem) listdata.get(oldPos);
+        //listdata.remove(oldPos);
+      //  listdata.add(newPos, item);
         adapter.notifyItemMoved(oldPos, newPos);
     }
 
     private void deleteItem(final int position) {
-        listdata.remove(position);
+       // listdata.remove(position);
         adapter.notifyItemRemoved(position);
     }
 
 
     @Override
     public void onItemClick(int p) {
-        ListItem item = (ListItem) listdata.get(p);
+     //   ListItem item = (ListItem) listdata.get(p);
         slideUp.show();
         Toast.makeText(this, "Item CLiked" + p, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onSecondaryIconClick(int p) {
-        ListItem item = (ListItem) listdata.get(p);
+        /*ListItem item = (ListItem) listdata.get(p);
         //update our data
         if (item.isFavorite()) {
             item.setFavorite(false);
@@ -299,7 +320,7 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
         }
         //pass new data to adapter and update
         adapter.setListData(listdata);
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();*/
 
     }
 
@@ -455,6 +476,11 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
           //  DetailSingleInstance.getInstance().getItemData(p);
             int size = u.getData().size();
            // MyApp.getApplication().writeUser(u);
+        }else if(callNumber == 3){
+            Log.d("response", o.toString());
+            GetOffers g = new Gson().fromJson(o.toString(), GetOffers.class);
+            OffersInstance.getInstance().setOffersData(g);
+            int size = g.getData().size();
         }
     }
 
@@ -502,7 +528,7 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
             finishAffinity();
             MyApp.setStatus(AppConstants.IS_LOGGED, false);
         } else if (position == 1) {
-            Intent i = new Intent(this, ResturantList.class);
+            Intent i = new Intent(this, GetAllOffersActivity.class);
             startActivity(i);
         } else if (position == 0) {
             startActivity(new Intent(getContext(), ProfileActivity.class));

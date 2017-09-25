@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dim_250"
+    android:id="@+id/rel_get_offers"
+    android:background="@null">
+
+
+    <ImageView
+        android:id="@+id/tv_offer_image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dim_250"
+        android:background="@null"
+        android:src="@drawable/card_5" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ABB2B5AB"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dim_5"
+        android:paddingLeft="@dimen/dim_10"
+        android:paddingTop="@dimen/dim_5">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Olympic Hair Style"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dim_18" />
+
+        <TextView
+            android:id="@+id/tv_offer_descp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New Ashok Nagar"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dim_16" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#B4000000"
+        android:orientation="vertical"
+        android:id="@+id/lnr_offer_detail"
+        android:padding="@dimen/dim_10">
+
+        <TextView
+            android:id="@+id/tv_offer_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="Offer Rs 500.00"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dim_16" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dim_20"
+            android:background="@null"
+            android:text="Discount 50%"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dim_16" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_10">
+
+            <TextView
+                android:id="@+id/tv_actual_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text="Actual Rs 1000"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dim_16" />
+
+            <TextView
+                android:id="@+id/tv_offer_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@null"
+                android:text="Offer Name"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dim_16" />
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

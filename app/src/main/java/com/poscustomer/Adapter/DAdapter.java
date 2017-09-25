@@ -7,9 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mancj.slideup.SlideUp;
+import com.poscustomer.Model.GetOffers;
 import com.poscustomer.Model.ListItem;
 import com.poscustomer.R;
 
@@ -19,10 +22,11 @@ import java.util.List;
 public class DAdapter extends RecyclerView.Adapter<DAdapter.DataHolder> {
 
 
-    private List<ListItem> listdata;
+    private GetOffers listdata;
     private LayoutInflater inflater;
     private ItemClickCallback itemclickcallback;
-
+    private int count = 0;
+    private Context context;
     public interface ItemClickCallback {
         void onItemClick(int p);
 
@@ -35,7 +39,7 @@ public class DAdapter extends RecyclerView.Adapter<DAdapter.DataHolder> {
     }
 
 
-    public DAdapter(List<ListItem> listdata, Context c) {
+    public DAdapter(GetOffers listdata, Context c) {
         this.inflater = LayoutInflater.from(c);
         this.listdata = listdata;
     }
@@ -43,47 +47,50 @@ public class DAdapter extends RecyclerView.Adapter<DAdapter.DataHolder> {
     @Override
     public DataHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = inflater.inflate(R.layout.card_view, parent, false);
+        View view = inflater.inflate(R.layout.get_offers_item, parent, false);
         return new DataHolder(view);
 
     }
 
     @Override
     public void onBindViewHolder(DataHolder holder, int position) {
-        ListItem item = listdata.get(position);
-        holder.title.setText(item.getTitle());
-//        holder.icon.setImageResource(item.getImageResId());
-        holder.subTitle.setText(item.getSubTitle());
-       /* if (item.isFavorite()) {
-            holder.secondaryIcon.setImageResource(R.drawable.ic_favorite_black_24dp);
-        } else {
-            holder.secondaryIcon.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-        } */
+        GetOffers.Data item = listdata.getData().get(position);
+        holder.tv_name.setText(item.getName());
+        holder.tv_offer_descp.setText(item.getOffer_description());
+        holder.tv_offer_price.setText(item.getOffer_price());
+        holder.tv_actual_rate.setText(item.getActual_rate());
+        holder.tv_offer_name.setText(item.getOffer_name());
+
+
+
 
     }
 
     @Override
     public int getItemCount() {
-        return listdata.size();
+        return listdata.getData().size();
     }
 
 
     class DataHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView title;
-        ImageView icon;
-        View container;
-        TextView subTitle;
-        TextView load;
-        //ImageView secondaryIcon;
+
+        TextView tv_name, tv_offer_descp, tv_offer_price, tv_actual_rate, tv_offer_name;
+        RelativeLayout rel_get_offers;
+        LinearLayout lnr_offer_detail;
 
         public DataHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.merchant);
-            container = itemView.findViewById(R.id.cont_item_root);
-            subTitle = (TextView) itemView.findViewById(R.id.address_merchant);
-            container.setOnClickListener(this);
-            load = (TextView) itemView.findViewById(R.id.timestamp);
-            load.setOnClickListener(this);
+            tv_name = (TextView) itemView.findViewById(R.id.tv_name);
+            tv_offer_descp = (TextView) itemView.findViewById(R.id.tv_offer_descp);
+            tv_offer_price = (TextView) itemView.findViewById(R.id.tv_offer_price);
+            tv_actual_rate = (TextView) itemView.findViewById(R.id.tv_actual_rate);
+            tv_offer_name = (TextView) itemView.findViewById(R.id.tv_offer_name);
+            rel_get_offers = (RelativeLayout) itemView.findViewById(R.id.rel_get_offers);
+            lnr_offer_detail = (LinearLayout) itemView.findViewById(R.id.lnr_offer_detail);
+
+            lnr_offer_detail.setOnClickListener(this);
+          //  load = (TextView) itemView.findViewById(R.id.timestamp);
+            rel_get_offers.setOnClickListener(this);
             //secondaryIcon = (ImageView) itemView.findViewById(R.id.im_item_icon_secondary);
             //secondaryIcon.setOnClickListener(this);
 
@@ -92,7 +99,7 @@ public class DAdapter extends RecyclerView.Adapter<DAdapter.DataHolder> {
 
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.timestamp) {
+            if (v.getId() == R.id.rel_get_offers) {
                 itemclickcallback.onItemClick(getAdapterPosition());
             } else {
                 //itemclickcallback.onSecondaryIconClick(getAdapterPosition());
@@ -100,8 +107,5 @@ public class DAdapter extends RecyclerView.Adapter<DAdapter.DataHolder> {
         }
     }
 
-    public void setListData(ArrayList<ListItem> exerciseList) {
-        this.listdata.clear();
-        this.listdata.addAll(exerciseList);
-    }
+
 }
