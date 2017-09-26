@@ -114,10 +114,10 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
         txt_email = (TextView) findViewById(R.id.txt_email);
 
         RestUser.Data u = MyApp.getApplication().readUser().getData();
-        txt_name.setText(u.getName().toString());
-        txt_mobile.setText(u.getPhone().toString());
-        txt_address.setText(u.getAddress().toString());
-        txt_email.setText(u.getEmail().toString());
+        txt_name.setText(u.getName());
+        txt_mobile.setText(u.getPhone());
+        txt_address.setText(u.getAddress());
+        txt_email.setText(u.getEmail());
     }
 
     @Override
@@ -141,8 +141,6 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
         p.put("user_id", MyApp.getApplication().readUser().getData().getApp_user_id());
         p.put("name", txt_name.getText().toString());
         p.put("phone", txt_mobile.getText().toString());
-      //  p.put("lat", location.getLatitude());
-        //p.put("lon", location.getLongitude());
         p.put("address", txt_address.getText().toString());
         p.put("device_token", MyApp.getSharedPrefString(AppConstants.DEVICE_TOKEN));
         p.put("deviceType", "Android");
@@ -161,7 +159,6 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
     public void onJsonObjectResponseReceived(JSONObject o, int callNumber) {
         Log.d("response", o.toString());
         if (o.optInt("status") == 1) {
-
             MyApp.showMassage(getContext(), "Profile Updated Successfully");
             RestUser u = new Gson().fromJson(o.toString(), RestUser.class);;
             MyApp.getApplication().writeUser(u);
@@ -170,7 +167,6 @@ public class ProfileActivity extends CustomActivity implements CustomActivity.Re
             finish();
         } else {
             MyApp.popMessage("Error", o.optString("message"), getContext());
-
         }
 
     }

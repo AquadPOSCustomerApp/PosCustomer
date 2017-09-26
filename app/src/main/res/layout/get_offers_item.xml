@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dim_250"
         android:background="@null"
+        android:scaleType="centerCrop"
         android:src="@drawable/card_5" />
 
     <LinearLayout
@@ -60,7 +61,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dim_20"
             android:background="@null"
             android:text="Discount 50%"
             android:textColor="@color/white"

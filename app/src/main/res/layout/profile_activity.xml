@@ -16,6 +16,16 @@
         android:background="@drawable/bg"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:shadowColor="@color/white"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"
+            android:layout_marginLeft="@dimen/dim_50"
+            android:layout_marginTop="@dimen/dim_30"
+            android:text="Name" />
 
         <EditText
             android:id="@+id/txt_name"
@@ -23,7 +33,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dim_50"
             android:layout_marginRight="@dimen/dim_50"
-            android:layout_marginTop="@dimen/dim_30"
             android:background="@drawable/back"
             android:gravity="center_vertical"
             android:hint="Name"
@@ -32,6 +41,16 @@
             android:textColor="@color/black"
             android:textSize="16sp" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:shadowColor="@color/white"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"
+            android:layout_marginLeft="@dimen/dim_50"
+            android:layout_marginTop="@dimen/dim_15"
+            android:text="Mobile Number" />
 
         <EditText
             android:id="@+id/txt_mobile"
@@ -39,7 +58,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dim_50"
             android:layout_marginRight="@dimen/dim_50"
-            android:layout_marginTop="@dimen/dim_15"
             android:background="@drawable/back"
             android:gravity="center_vertical"
             android:hint="Mobile Number"
@@ -48,13 +66,23 @@
             android:textColor="@color/black"
             android:textSize="16sp" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:shadowColor="@color/white"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"
+            android:layout_marginLeft="@dimen/dim_50"
+            android:layout_marginTop="@dimen/dim_15"
+            android:text="Address" />
+
         <EditText
             android:id="@+id/txt_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dim_50"
             android:layout_marginRight="@dimen/dim_50"
-            android:layout_marginTop="@dimen/dim_15"
             android:background="@drawable/back"
             android:gravity="center_vertical"
             android:hint="Address"
@@ -65,12 +93,22 @@
             android:textSize="16sp" />
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dim_50"
+            android:layout_marginTop="@dimen/dim_15"
+            android:shadowColor="@color/white"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"
+            android:text="Email Address" />
+
+        <TextView
             android:id="@+id/txt_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dim_50"
             android:layout_marginRight="@dimen/dim_50"
-            android:layout_marginTop="@dimen/dim_15"
             android:background="@drawable/back"
             android:gravity="center_vertical"
             android:hint="Email"

@@ -20,19 +20,20 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/toolbar_1"></include>
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/dim_10"
-    >
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/logo"
-        />
-    </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/toolbar_1"></include>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dim_20"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/logo" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -76,11 +77,11 @@
                         android:textSize="@dimen/dim_20" />
 
                     <ListView
-                    android:id="@+id/list_purchase"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                        android:id="@+id/list_purchase"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dim_10"
-                    android:divider="@color/colorPrimary" />
+                        android:divider="@color/colorPrimary" />
 
 
                     <TextView
@@ -108,18 +109,17 @@
                         android:stepSize="0.5" />
 
                     <Button
+                        android:id="@+id/prev_purchase_submit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:id="@+id/prev_purchase_submit"
                         android:layout_gravity="center"
-                        android:text="Submit"
-                        android:textSize="@dimen/dim_20"
-                        android:textColor="@color/white"
-                        android:background="@color/colorPrimary"
-                        android:padding="@dimen/dim_3"
                         android:layout_marginTop="@dimen/dim_10"
-                        />
+                        android:background="@color/colorPrimary"
+                        android:gravity="center"
+                        android:padding="@dimen/dim_3"
+                        android:text="Submit"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/dim_20" />
                 </LinearLayout>
 
             </RelativeLayout>

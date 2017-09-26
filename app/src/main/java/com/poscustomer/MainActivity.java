@@ -43,8 +43,6 @@ import com.loopj.android.http.RequestParams;
 import com.mancj.slideup.SlideUp;
 import com.poscustomer.Adapter.CustomAdapter;
 import com.poscustomer.Adapter.DAdapter;
-import com.poscustomer.Adapter.GetOfferAdapter;
-import com.poscustomer.Application.DetailSingleInstance;
 import com.poscustomer.Application.MyApp;
 import com.poscustomer.Application.OffersInstance;
 import com.poscustomer.Application.SingleInstance;
@@ -54,7 +52,6 @@ import com.poscustomer.Model.DummyListItem;
 import com.poscustomer.Model.GetOffers;
 import com.poscustomer.Model.ListItem;
 import com.poscustomer.Model.OrderHistory;
-import com.poscustomer.Model.OrderItem;
 import com.poscustomer.Model.RestUser;
 import com.poscustomer.Utils.AppConstants;
 
@@ -157,11 +154,7 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
         rec_get_al_offers.setAdapter(adapter);*/
 
         recView = (RecyclerView) findViewById(R.id.rec_list);
-        listdata = OffersInstance.getInstance().getOffersData();
-        recView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new DAdapter(listdata, this);
-        recView.setAdapter(adapter);
-        adapter.SetItemClickCallback(this);
+
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(createHelperCallback());
         itemTouchHelper.attachToRecyclerView(recView);
@@ -282,11 +275,11 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
         return simpleItemTouchCallback;
     }
 
-    private void addItemToList() {
-        ListItem item = DummyData.getRandomListItem();
-       // listdata.add(item);
-        //adapter.notifyItemInserted(listdata.indexOf(item));
-    }
+//    private void addItemToList() {
+//        ListItem item = DummyData.getRandomListItem();
+//        listdata.add(item);
+//        adapter.notifyItemInserted(listdata.indexOf(item));
+//    }
 
     private void moveItem(int oldPos, int newPos) {
 
@@ -459,7 +452,6 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
 
@@ -480,7 +472,12 @@ public class MainActivity extends CustomActivity implements DAdapter.ItemClickCa
             Log.d("response", o.toString());
             GetOffers g = new Gson().fromJson(o.toString(), GetOffers.class);
             OffersInstance.getInstance().setOffersData(g);
-            int size = g.getData().size();
+
+            listdata = OffersInstance.getInstance().getOffersData();
+            recView.setLayoutManager(new LinearLayoutManager(this));
+            adapter = new DAdapter(listdata, this);
+            recView.setAdapter(adapter);
+            adapter.SetItemClickCallback(this);
         }
     }
 
